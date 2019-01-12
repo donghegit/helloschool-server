@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grapep.byle.commodity.dao.CommodityMapper">
+    <resultMap id="BaseResultMap" type="com.grapep.byle.commodity.entity.Commodity">
+        <id column="commody_id" property="commodyId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="kind_id" property="kindId" jdbcType="INTEGER"/>
+        <result column="comd_name" property="comdName" jdbcType="VARCHAR"/>
+        <result column="comd_title" property="comdTitle" jdbcType="VARCHAR"/>
+        <result column="comd_price" property="comdPrice" jdbcType="DOUBLE"/>
+        <result column="comd_release_time" property="comdReleaseTime" jdbcType="TIMESTAMP"/>
+        <result column="comod_off_shelf_time" property="comodOffShelfTime" jdbcType="TIMESTAMP"/>
+        <result column="comd_delete_time" property="comdDeleteTime" jdbcType="TIMESTAMP"/>
+        <result column="comd_state" property="comdState" jdbcType="VARCHAR"/>
+        <result column="comd_last_price" property="comdLastPrice" jdbcType="DOUBLE"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.grapep.byle.commodity.entity.CommodityWithBLOBs"
+               extends="BaseResultMap">
+        <result column="comd_content" property="comdContent" jdbcType="LONGVARCHAR"/>
+        <result column="comd_picture" property="comdPicture" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    commody_id, user_id, kind_id, comd_name, comd_title, comd_price, comd_release_time, 
+    comod_off_shelf_time, comd_delete_time, comd_state, comd_last_price
+  </sql>
+    <sql id="Blob_Column_List">
+    comd_content, comd_picture
+  </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="com.grapep.byle.commodity.entity.CommodityExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from commodity
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.grapep.byle.commodity.entity.CommodityExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from commodity
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from commodity
+        where commody_id = #{commodyId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from commodity
+    where commody_id = #{commodyId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.grapep.byle.commodity.entity.CommodityExample">
+        delete from commodity
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.grapep.byle.commodity.entity.CommodityWithBLOBs">
+    insert into commodity (commody_id, user_id, kind_id, 
+      comd_name, comd_title, comd_price, 
+      comd_release_time, comod_off_shelf_time, 
+      comd_delete_time, comd_state, comd_last_price, 
+      comd_content, comd_picture)
+    values (#{commodyId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{kindId,jdbcType=INTEGER}, 
+      #{comdName,jdbcType=VARCHAR}, #{comdTitle,jdbcType=VARCHAR}, #{comdPrice,jdbcType=DECIMAL}, 
+      #{comdReleaseTime,jdbcType=TIMESTAMP}, #{comodOffShelfTime,jdbcType=TIMESTAMP}, 
+      #{comdDeleteTime,jdbcType=TIMESTAMP}, #{comdState,jdbcType=VARCHAR}, #{comdLastPrice,jdbcType=DECIMAL}, 
+      #{comdContent,jdbcType=LONGVARCHAR}, #{comdPicture,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.grapep.byle.commodity.entity.CommodityWithBLOBs">
+        insert into commodity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commodyId != null">
+                commody_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="kindId != null">
+                kind_id,
+            </if>
+            <if test="comdName != null">
+                comd_name,
+            </if>
+            <if test="comdTitle != null">
+                comd_title,
+            </if>
+            <if test="comdPrice != null">
+                comd_price,
+            </if>
+            <if test="comdReleaseTime != null">
+                comd_release_time,
+            </if>
+            <if test="comodOffShelfTime != null">
+                comod_off_shelf_time,
+            </if>
+            <if test="comdDeleteTime != null">
+                comd_delete_time,
+            </if>
+            <if test="comdState != null">
+                comd_state,
+            </if>
+            <if test="comdLastPrice != null">
+                comd_last_price,
+            </if>
+            <if test="comdContent != null">
+                comd_content,
+            </if>
+            <if test="comdPicture != null">
+                comd_picture,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commodyId != null">
+                #{commodyId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="kindId != null">
+                #{kindId,jdbcType=INTEGER},
+            </if>
+            <if test="comdName != null">
+                #{comdName,jdbcType=VARCHAR},
+            </if>
+            <if test="comdTitle != null">
+                #{comdTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="comdPrice != null">
+                #{comdPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="comdReleaseTime != null">
+                #{comdReleaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comodOffShelfTime != null">
+                #{comodOffShelfTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comdDeleteTime != null">
+                #{comdDeleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comdState != null">
+                #{comdState,jdbcType=VARCHAR},
+            </if>
+            <if test="comdLastPrice != null">
+                #{comdLastPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="comdContent != null">
+                #{comdContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comdPicture != null">
+                #{comdPicture,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.grapep.byle.commodity.entity.CommodityExample"
+            resultType="java.lang.Integer">
+        select count(*) from commodity
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update commodity
+        <set>
+            <if test="record.commodyId != null">
+                commody_id = #{record.commodyId,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.kindId != null">
+                kind_id = #{record.kindId,jdbcType=INTEGER},
+            </if>
+            <if test="record.comdName != null">
+                comd_name = #{record.comdName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.comdTitle != null">
+                comd_title = #{record.comdTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.comdPrice != null">
+                comd_price = #{record.comdPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.comdReleaseTime != null">
+                comd_release_time = #{record.comdReleaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.comodOffShelfTime != null">
+                comod_off_shelf_time = #{record.comodOffShelfTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.comdDeleteTime != null">
+                comd_delete_time = #{record.comdDeleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.comdState != null">
+                comd_state = #{record.comdState,jdbcType=VARCHAR},
+            </if>
+            <if test="record.comdLastPrice != null">
+                comd_last_price = #{record.comdLastPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.comdContent != null">
+                comd_content = #{record.comdContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.comdPicture != null">
+                comd_picture = #{record.comdPicture,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update commodity
+        set commody_id = #{record.commodyId,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        kind_id = #{record.kindId,jdbcType=INTEGER},
+        comd_name = #{record.comdName,jdbcType=VARCHAR},
+        comd_title = #{record.comdTitle,jdbcType=VARCHAR},
+        comd_price = #{record.comdPrice,jdbcType=DECIMAL},
+        comd_release_time = #{record.comdReleaseTime,jdbcType=TIMESTAMP},
+        comod_off_shelf_time = #{record.comodOffShelfTime,jdbcType=TIMESTAMP},
+        comd_delete_time = #{record.comdDeleteTime,jdbcType=TIMESTAMP},
+        comd_state = #{record.comdState,jdbcType=VARCHAR},
+        comd_last_price = #{record.comdLastPrice,jdbcType=DECIMAL},
+        comd_content = #{record.comdContent,jdbcType=LONGVARCHAR},
+        comd_picture = #{record.comdPicture,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update commodity
+        set commody_id = #{record.commodyId,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        kind_id = #{record.kindId,jdbcType=INTEGER},
+        comd_name = #{record.comdName,jdbcType=VARCHAR},
+        comd_title = #{record.comdTitle,jdbcType=VARCHAR},
+        comd_price = #{record.comdPrice,jdbcType=DECIMAL},
+        comd_release_time = #{record.comdReleaseTime,jdbcType=TIMESTAMP},
+        comod_off_shelf_time = #{record.comodOffShelfTime,jdbcType=TIMESTAMP},
+        comd_delete_time = #{record.comdDeleteTime,jdbcType=TIMESTAMP},
+        comd_state = #{record.comdState,jdbcType=VARCHAR},
+        comd_last_price = #{record.comdLastPrice,jdbcType=DECIMAL}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.grapep.byle.commodity.entity.CommodityWithBLOBs">
+        update commodity
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="kindId != null">
+                kind_id = #{kindId,jdbcType=INTEGER},
+            </if>
+            <if test="comdName != null">
+                comd_name = #{comdName,jdbcType=VARCHAR},
+            </if>
+            <if test="comdTitle != null">
+                comd_title = #{comdTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="comdPrice != null">
+                comd_price = #{comdPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="comdReleaseTime != null">
+                comd_release_time = #{comdReleaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comodOffShelfTime != null">
+                comod_off_shelf_time = #{comodOffShelfTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comdDeleteTime != null">
+                comd_delete_time = #{comdDeleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comdState != null">
+                comd_state = #{comdState,jdbcType=VARCHAR},
+            </if>
+            <if test="comdLastPrice != null">
+                comd_last_price = #{comdLastPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="comdContent != null">
+                comd_content = #{comdContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comdPicture != null">
+                comd_picture = #{comdPicture,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where commody_id = #{commodyId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.grapep.byle.commodity.entity.CommodityWithBLOBs">
+    update commodity
+    set user_id = #{userId,jdbcType=INTEGER},
+      kind_id = #{kindId,jdbcType=INTEGER},
+      comd_name = #{comdName,jdbcType=VARCHAR},
+      comd_title = #{comdTitle,jdbcType=VARCHAR},
+      comd_price = #{comdPrice,jdbcType=DECIMAL},
+      comd_release_time = #{comdReleaseTime,jdbcType=TIMESTAMP},
+      comod_off_shelf_time = #{comodOffShelfTime,jdbcType=TIMESTAMP},
+      comd_delete_time = #{comdDeleteTime,jdbcType=TIMESTAMP},
+      comd_state = #{comdState,jdbcType=VARCHAR},
+      comd_last_price = #{comdLastPrice,jdbcType=DECIMAL},
+      comd_content = #{comdContent,jdbcType=LONGVARCHAR},
+      comd_picture = #{comdPicture,jdbcType=LONGVARCHAR}
+    where commody_id = #{commodyId,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.grapep.byle.commodity.entity.Commodity">
+    update commodity
+    set user_id = #{userId,jdbcType=INTEGER},
+      kind_id = #{kindId,jdbcType=INTEGER},
+      comd_name = #{comdName,jdbcType=VARCHAR},
+      comd_title = #{comdTitle,jdbcType=VARCHAR},
+      comd_price = #{comdPrice,jdbcType=DECIMAL},
+      comd_release_time = #{comdReleaseTime,jdbcType=TIMESTAMP},
+      comod_off_shelf_time = #{comodOffShelfTime,jdbcType=TIMESTAMP},
+      comd_delete_time = #{comdDeleteTime,jdbcType=TIMESTAMP},
+      comd_state = #{comdState,jdbcType=VARCHAR},
+      comd_last_price = #{comdLastPrice,jdbcType=DECIMAL}
+    where commody_id = #{commodyId,jdbcType=INTEGER}
+  </update>
+
+    <resultMap id="queryForListMap" type="com.grapep.byle.commodity.entity.CommodityWithUser"
+               extends="ResultMapWithBLOBs">
+        <!--<association property="user" javaType="com.grapep.byle.user.entity.User" column="user_id" >-->
+        <!--<id column="user_id" property="userId" jdbcType="INTEGER"/>-->
+        <!--<result column="school_id" property="schoolId" jdbcType="INTEGER"/>-->
+        <!--<result column="user_name" property="userName" jdbcType="VARCHAR"/>-->
+        <!--<result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>-->
+        <!--<result column="user_age" property="userAge" jdbcType="INTEGER"/>-->
+        <!--<result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP"/>-->
+        <!--<result column="user_address" property="userAddress" jdbcType="VARCHAR"/>-->
+        <!--<result column="user_major" property="userMajor" jdbcType="VARCHAR"/>-->
+        <!--<result column="major_hobby" property="majorHobby" jdbcType="VARCHAR"/>-->
+        <!--<result column="is_authentication" property="isAuthentication" jdbcType="VARCHAR"/>-->
+        <!--<result column="user_register_time" property="userRegisterTime" jdbcType="TIMESTAMP"/>-->
+        <!--<result column="authentication_time" property="authenticationTime" jdbcType="TIMESTAMP"/>-->
+        <!--<result column="user_delete_time" property="userDeleteTime" jdbcType="TIMESTAMP"/>-->
+        <!--<result column="user_state" property="userState" jdbcType="VARCHAR"/>-->
+        <!--</association>-->
+        <association property="user" resultMap="com.grapep.byle.user.dao.UserMapper.BaseResultMap"/>
+    </resultMap>
+
+    <select id="selectCommoditiesBySchool" resultMap="queryForListMap" parameterType="java.lang.Integer">
+        select
+        c.commody_id, u.user_id, c.kind_id, c.comd_name, c.comd_title, c.comd_price, c.comd_release_time, c.comod_off_shelf_time, c.comd_delete_time, c.comd_state, c.comd_last_price , c.comd_content, c.comd_picture ,u.school_id,u.user_name,u.user_phone,u.user_age,u.user_birthday,u.user_address ,u.user_major,u.major_hobby,u.is_authentication,u.user_register_time,u.authentication_time ,u.user_delete_time,u.user_state
+        from commodity AS c,user AS u
+        where c.user_id=u.user_id
+        AND u.user_id IN ( select user_id from user where school_id =1);
+    </select>
+    <select id="selectCommoditiesByKind" resultMap="queryForListMap" parameterType="java.lang.Integer">
+    SELECT
+	  c.commody_id,
+	  u.user_id,
+	  c.kind_id,
+	  c.comd_name,
+	  c.comd_title,
+	  c.comd_price,
+	  c.comd_release_time,
+	  c.comod_off_shelf_time,
+	  c.comd_delete_time,
+	  c.comd_state,
+	  c.comd_last_price,
+	  c.comd_content,
+	  c.comd_picture,
+	  u.school_id,
+	  u.user_name,
+	  u.user_phone,
+	  u.user_age,
+	  u.user_birthday,
+	  u.user_address,
+	  u.user_major,
+	  u.major_hobby,
+	  u.is_authentication,
+	  u.user_register_time,
+	  u.authentication_time,
+	  u.user_delete_time,
+	  u.user_state
+  FROM
+	commodity c,
+	USER u
+  WHERE
+	c.user_id = u.user_id AND c.kind_id = #{KindId}
+    </select>
+    <select id="selectCommoditiesThroughSearch"
+            resultMap="queryForListMap" parameterType="java.lang.String">
+        SELECT
+        c.commody_id,
+        u.user_id,
+        c.kind_id,
+        c.comd_name,
+        c.comd_title,
+        c.comd_price,
+        c.comd_release_time,
+        c.comod_off_shelf_time,
+        c.comd_delete_time,
+        c.comd_state,
+        c.comd_last_price,
+        c.comd_content,
+        c.comd_picture,
+        u.school_id,
+        u.user_name,
+        u.user_phone,
+        u.user_age,
+        u.user_birthday,
+        u.user_address,
+        u.user_major,
+        u.major_hobby,
+        u.is_authentication,
+        u.user_register_time,
+        u.authentication_time,
+        u.user_delete_time,
+        u.user_state
+        FROM
+        commodity c,
+        USER u
+        WHERE
+        c.user_id = u.user_id AND c.comd_title LIKE #{search}
+        <bind name="search" value="'%'+comdTitle+'%'"/>
+    </select>
+    <select id="selectDecimalComodities" resultMap="queryForListMap">
+    SELECT
+	  c.commody_id,
+	  u.user_id,
+	  c.kind_id,
+	  c.comd_name,
+	  c.comd_title,
+	  c.comd_price,
+	  c.comd_release_time,
+	  c.comod_off_shelf_time,
+	  c.comd_delete_time,
+	  c.comd_state,
+	  c.comd_last_price,
+	  c.comd_content,
+	  c.comd_picture,
+	  u.school_id,
+	  u.user_name,
+	  u.user_phone,
+	  u.user_age,
+	  u.user_birthday,
+	  u.user_address,
+	  u.user_major,
+	  u.major_hobby,
+	  u.is_authentication,
+	  u.user_register_time,
+	  u.authentication_time,
+	  u.user_delete_time,
+	  u.user_state
+    FROM
+	  commodity c,
+	  USER u
+    WHERE
+	  c.user_id = u.user_id
+    ORDER BY
+	  c.commody_id ASC
+    </select>
+</mapper>

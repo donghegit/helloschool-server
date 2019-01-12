@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grapep.byle.user.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.grapep.byle.user.entity.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="school_id" property="schoolId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_head" property="userHead" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_age" property="userAge" jdbcType="INTEGER" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user_major" property="userMajor" jdbcType="VARCHAR" />
+    <result column="major_hobby" property="majorHobby" jdbcType="VARCHAR" />
+    <result column="is_authentication" property="isAuthentication" jdbcType="VARCHAR" />
+    <result column="user_register_time" property="userRegisterTime" jdbcType="TIMESTAMP" />
+    <result column="authentication_time" property="authenticationTime" jdbcType="TIMESTAMP" />
+    <result column="user_delete_time" property="userDeleteTime" jdbcType="TIMESTAMP" />
+    <result column="user_state" property="userState" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, school_id, user_name, user_head, user_phone, user_age, user_birthday, user_address, 
+    user_major, major_hobby, is_authentication, user_register_time, authentication_time, 
+    user_delete_time, user_state, user_sex
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.grapep.byle.user.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.grapep.byle.user.entity.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.grapep.byle.user.entity.User" >
+    insert into user (user_id, school_id, user_name, 
+      user_head, user_phone, user_age, 
+      user_birthday, user_address, user_major, 
+      major_hobby, is_authentication, user_register_time, 
+      authentication_time, user_delete_time, 
+      user_state, user_sex)
+    values (#{userId,jdbcType=INTEGER}, #{schoolId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{userHead,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR}, #{userAge,jdbcType=INTEGER}, 
+      #{userBirthday,jdbcType=TIMESTAMP}, #{userAddress,jdbcType=VARCHAR}, #{userMajor,jdbcType=VARCHAR}, 
+      #{majorHobby,jdbcType=VARCHAR}, #{isAuthentication,jdbcType=VARCHAR}, #{userRegisterTime,jdbcType=TIMESTAMP}, 
+      #{authenticationTime,jdbcType=TIMESTAMP}, #{userDeleteTime,jdbcType=TIMESTAMP}, 
+      #{userState,jdbcType=VARCHAR}, #{userSex,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.grapep.byle.user.entity.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="schoolId != null" >
+        school_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userHead != null" >
+        user_head,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="userAge != null" >
+        user_age,
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday,
+      </if>
+      <if test="userAddress != null" >
+        user_address,
+      </if>
+      <if test="userMajor != null" >
+        user_major,
+      </if>
+      <if test="majorHobby != null" >
+        major_hobby,
+      </if>
+      <if test="isAuthentication != null" >
+        is_authentication,
+      </if>
+      <if test="userRegisterTime != null" >
+        user_register_time,
+      </if>
+      <if test="authenticationTime != null" >
+        authentication_time,
+      </if>
+      <if test="userDeleteTime != null" >
+        user_delete_time,
+      </if>
+      <if test="userState != null" >
+        user_state,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null" >
+        #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userAge != null" >
+        #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        #{userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userMajor != null" >
+        #{userMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="majorHobby != null" >
+        #{majorHobby,jdbcType=VARCHAR},
+      </if>
+      <if test="isAuthentication != null" >
+        #{isAuthentication,jdbcType=VARCHAR},
+      </if>
+      <if test="userRegisterTime != null" >
+        #{userRegisterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authenticationTime != null" >
+        #{authenticationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userDeleteTime != null" >
+        #{userDeleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userState != null" >
+        #{userState,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.grapep.byle.user.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.schoolId != null" >
+        school_id = #{record.schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userHead != null" >
+        user_head = #{record.userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null" >
+        user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAge != null" >
+        user_age = #{record.userAge,jdbcType=INTEGER},
+      </if>
+      <if test="record.userBirthday != null" >
+        user_birthday = #{record.userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userAddress != null" >
+        user_address = #{record.userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userMajor != null" >
+        user_major = #{record.userMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.majorHobby != null" >
+        major_hobby = #{record.majorHobby,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isAuthentication != null" >
+        is_authentication = #{record.isAuthentication,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userRegisterTime != null" >
+        user_register_time = #{record.userRegisterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.authenticationTime != null" >
+        authentication_time = #{record.authenticationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userDeleteTime != null" >
+        user_delete_time = #{record.userDeleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userState != null" >
+        user_state = #{record.userState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSex != null" >
+        user_sex = #{record.userSex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      school_id = #{record.schoolId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_head = #{record.userHead,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      user_age = #{record.userAge,jdbcType=INTEGER},
+      user_birthday = #{record.userBirthday,jdbcType=TIMESTAMP},
+      user_address = #{record.userAddress,jdbcType=VARCHAR},
+      user_major = #{record.userMajor,jdbcType=VARCHAR},
+      major_hobby = #{record.majorHobby,jdbcType=VARCHAR},
+      is_authentication = #{record.isAuthentication,jdbcType=VARCHAR},
+      user_register_time = #{record.userRegisterTime,jdbcType=TIMESTAMP},
+      authentication_time = #{record.authenticationTime,jdbcType=TIMESTAMP},
+      user_delete_time = #{record.userDeleteTime,jdbcType=TIMESTAMP},
+      user_state = #{record.userState,jdbcType=VARCHAR},
+      user_sex = #{record.userSex,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.grapep.byle.user.entity.User" >
+    update user
+    <set >
+      <if test="schoolId != null" >
+        school_id = #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        user_head = #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userAge != null" >
+        user_age = #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday = #{userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userAddress != null" >
+        user_address = #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userMajor != null" >
+        user_major = #{userMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="majorHobby != null" >
+        major_hobby = #{majorHobby,jdbcType=VARCHAR},
+      </if>
+      <if test="isAuthentication != null" >
+        is_authentication = #{isAuthentication,jdbcType=VARCHAR},
+      </if>
+      <if test="userRegisterTime != null" >
+        user_register_time = #{userRegisterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authenticationTime != null" >
+        authentication_time = #{authenticationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userDeleteTime != null" >
+        user_delete_time = #{userDeleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userState != null" >
+        user_state = #{userState,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.grapep.byle.user.entity.User" >
+    update user
+    set school_id = #{schoolId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_head = #{userHead,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_age = #{userAge,jdbcType=INTEGER},
+      user_birthday = #{userBirthday,jdbcType=TIMESTAMP},
+      user_address = #{userAddress,jdbcType=VARCHAR},
+      user_major = #{userMajor,jdbcType=VARCHAR},
+      major_hobby = #{majorHobby,jdbcType=VARCHAR},
+      is_authentication = #{isAuthentication,jdbcType=VARCHAR},
+      user_register_time = #{userRegisterTime,jdbcType=TIMESTAMP},
+      authentication_time = #{authenticationTime,jdbcType=TIMESTAMP},
+      user_delete_time = #{userDeleteTime,jdbcType=TIMESTAMP},
+      user_state = #{userState,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user_phone = #{userPhone,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateBaseInfoByUserId" parameterType="com.grapep.byle.user.entity.User" >
+    update user
+    set user_name = #{userName,jdbcType=VARCHAR},
+    user_head = #{userHead,jdbcType=VARCHAR},
+    is_authentication = #{isAuthentication,jdbcType=VARCHAR},
+    user_sex = #{userSex,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

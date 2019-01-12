@@ -1,0 +1,33 @@
+spring:
+  datasource:
+     name: dev
+     url: jdbc:mysql://47.94.216.99:3306/byle
+     username: root
+     password: root
+
+
+  http:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+redis:
+    host: 47.94.216.99
+    port: 6379
+    #最小能够保持idel状态的对象数
+    min-idle: 50
+    #最大能够保持idel状态的对象数
+    max-idle: 100
+    #最大活动对象数
+    max-total: 1000
+    #当池内没有返回对象时，最大等待时间
+    max-wait-millis: 10000
+    #当调用borrow Object方法时，是否进行有效性检查
+    testOnBorrow: true
+
+#activeMQ
+activemq:
+   broker-url: tcp://47.94.216.99:61616
+   pool:
+    enabled: false
+
